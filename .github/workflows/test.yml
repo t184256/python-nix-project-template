@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pip3 install pytest
-      - run: PYTHONPATH=. pytest
       - run: PYTHONPATH=. pytest --doctest-modules project_name tests  # TODO: replace
 
   lint:
