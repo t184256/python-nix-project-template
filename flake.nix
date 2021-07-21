@@ -20,12 +20,14 @@
             ];
             checkInputs = with pkgs.python3Packages; [
               pytest
+              coverage
               flake8
               flake8-import-order
               codespell
             ];
             checkPhase = ''
-              pytest --doctest-modules project_name tests  # TODO: replace
+              coverage run -m pytest --doctest-modules project_name tests  # TODO: replace
+              coverage report --fail-under=100
               flake8
               codespell
             '';

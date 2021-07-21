@@ -10,7 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pip3 install pytest
-      - run: PYTHONPATH=. pytest --doctest-modules project_name tests  # TODO: replace
+      - run: PYTHONPATH=. pytest
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip3 install pytest coverage
+      - run: |
+          coverage run -m pytest --doctest-modules project_name tests  # TODO: replace
+          coverage report --fail-under=100
 
   lint:
     runs-on: ubuntu-latest

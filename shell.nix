@@ -8,6 +8,7 @@ pkgs.mkShell {
   ];
   nativeBuildInputs = with pkgs.python3Packages; [
     pytest
+    coverage
     flake8
     flake8-import-order
     codespell
