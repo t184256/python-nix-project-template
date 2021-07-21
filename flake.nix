@@ -26,6 +26,7 @@
             ];
             checkPhase = ''
               pytest
+              pytest --doctest-modules project_name tests  # TODO: replace
               flake8
               codespell
             '';
