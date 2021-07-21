@@ -24,13 +24,8 @@
               flake8
               flake8-import-order
               codespell
-            ];
-            checkPhase = ''
-              coverage run -m pytest --doctest-modules project_name tests  # TODO: replace
-              coverage report --fail-under=100
-              flake8
-              codespell
-            '';
+            ] ++ [ pkgs.gnumake ];
+            checkPhase = "make check";
           };
         in
         {

@@ -10,34 +10,28 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: pip3 install pytest
-      - run: PYTHONPATH=. pytest
+      - run: make unit
 
   coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: pip3 install pytest coverage
-      - run: |
-          coverage run -m pytest --doctest-modules project_name tests  # TODO: replace
-          coverage report --fail-under=100
+      - run: make coverage
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: pip3 install flake8 flake8-import-order codespell
-      - run: flake8
-      - run: codespell
+      - run: make lint
 
   installation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: pip install .
-      - run: |
-          mkdir clean
-          cd clean
-          ../tests/installation/main.sh
+      - run: make installation-tests
 
   nix:
     runs-on: ubuntu-latest
@@ -48,7 +42,4 @@ jobs:
           install_url: https://github.com/numtide/nix-unstable-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
           extra_nix_config: |
             experimental-features = nix-command flakes
-      - run: nix build
-      - run: nix run .
-      - run: nix shell . -c tests/installation/main.sh
-      - run: nix flake check
+      - run: make nix-tests

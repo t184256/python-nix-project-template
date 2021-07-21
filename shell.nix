@@ -12,5 +12,5 @@ pkgs.mkShell {
     flake8
     flake8-import-order
     codespell
-  ];
+  ] ++ [ pkgs.gnumake ];
 }
