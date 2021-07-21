@@ -1,0 +1,45 @@
+name: test
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip3 install pytest
+      - run: PYTHONPATH=. pytest
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip3 install flake8 flake8-import-order codespell
+      - run: flake8
+      - run: codespell
+
+  installation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: pip install .
+      - run: |
+          mkdir clean
+          cd clean
+          ../tests/installation/main.sh
+
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cachix/install-nix-action@v13
+        with:
+          install_url: https://github.com/numtide/nix-unstable-installer/releases/download/nix-2.4pre20210604_8e6ee1b/install
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - run: nix build
+      - run: nix run .
+      - run: nix shell . -c tests/installation/main.sh
+      - run: nix flake check
