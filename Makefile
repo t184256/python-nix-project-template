@@ -1,4 +1,5 @@
 .PHONY: unit coverage lint nix-tests installation-tests
+.PHONY: lint-flake8 lint-codespell lint-spdx-check
 .PHONY: check coverage-html clean
 
 check: coverage lint
@@ -16,9 +17,36 @@ coverage-html: coverage
 	coverage html
 	xdg-open htmlcov/index.html || true
 
-lint:
+lint: lint-flake8 lint-codespell lint-spdx-check
+
+lint-flake8:
 	flake8
+
+lint-codespell:
 	codespell
+
+# TODO: replace with actual info
+COPYRIGHT=SPDX-FileCopyrightText: 0000 Author Name <author@example.org>
+LICENSE=SPDX-License-Identifier: CC-PDDC
+lint-spdx-check:
+	@echo spdx-check
+	@find . -name '*.py' | \
+	while IFS= read -r FILE; do \
+		if [ $$(wc -c < $$FILE) = 0 ]; then \
+			echo "  not checking SPDX tags of empty $$FILE."; \
+			continue; \
+		fi; \
+		echo -n "  checking SPDX tags of $$FILE: "; \
+		if ! grep -q "# ${COPYRIGHT}$$" $$FILE; then \
+			echo "NO ${COPYRIGHT}"; exit 1; \
+		fi; \
+		if ! grep -q "# ${COPYRIGHT}$$" $$FILE; then \
+			echo "NO ${LICENSE}"; exit 1; \
+		fi; \
+		echo 'OK'; \
+	done
+	@echo '  SPDX tags of Python files are in order.'
+
 
 installation-tests:
 	rm -rf .empty && mkdir .empty

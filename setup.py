@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 0000 Author Name <author@example.org>
+# SPDX-License-Identifier: CC-PDDC
+
 from setuptools import setup
 
 setup(
