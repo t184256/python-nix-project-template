@@ -30,7 +30,7 @@ COPYRIGHT=SPDX-FileCopyrightText: 0000 Author Name <author@example.org>
 LICENSE=SPDX-License-Identifier: CC-PDDC
 lint-spdx-check:
 	@echo spdx-check
-	@find . -name '*.py' | \
+	@(find . -name '*.py'; find . -name '*.sh') | \
 	while IFS= read -r FILE; do \
 		if [ $$(wc -c < $$FILE) = 0 ]; then \
 			echo "  not checking SPDX tags of empty $$FILE."; \
