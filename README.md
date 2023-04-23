@@ -1,3 +1,7 @@
+# Obsoleted
+
+I've switched to https://github.com/t184256/cookiecutter-python-nix
+
 # PROJECTNAME
 
 This is a template repository for Python development with Nix.
